@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.4"?>
+<plugin>
+   <extension
+         point="com.opcoach.e4.preferences.e4PreferenceStoreProvider">
+      <preferenceStoreProvider
+            class="es.uji.control.domain.jdbc.preferences.JDBCPStoreProvider"
+            pluginId="es.uji.control.domain.jdbc.preferences">
+      </preferenceStoreProvider>
+   </extension>
+   <extension
+         point="com.opcoach.e4.preferences.e4PreferencePages">
+      <page
+            class="es.uji.control.domain.jdbc.preferences.pages.JDBCPreferencesPage"
+            id="es.uji.control.domain.jdbc.preferences.page1"
+            name="Conexión JDBC">
+      </page>
+   </extension>
+
+</plugin>
