@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<scr:component xmlns:scr="http://www.osgi.org/xmlns/scr/v1.1.0" activate="activate" deactivate="deactivate" immediate="true" name="factory.ujioracle">
+   <service>
+      <provide interface="es.uji.control.domain.ujioracle.UjiOracleConnectionFactoryConfig"/>
+   </service>
+   <reference bind="bindPreferences" cardinality="1..1" interface="org.osgi.service.prefs.PreferencesService" name="preferences" policy="static" unbind="unbindPreferences"/>
+   <implementation class="es.uji.control.domain.ujioracle.internal.UjiOracleComponent"/>
+</scr:component>

@@ -16,6 +16,10 @@
       [Enter License Description here.]
    </license>
 
+   <includes
+         id="es.uji.control.domain.feature"
+         version="0.0.0"/>
+
    <plugin
          id="es.uji.control.domain.ujioracle"
          download-size="0"

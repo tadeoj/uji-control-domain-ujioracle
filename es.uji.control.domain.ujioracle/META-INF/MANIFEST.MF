@@ -4,7 +4,12 @@ Bundle-Name: Jdbc
 Bundle-SymbolicName: es.uji.control.domain.ujioracle
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
-Import-Package: es.uji.control.domain;version="1.0.0",
- es.uji.control.domain.authorizations;version="1.0.0",
- es.uji.control.domain.people;version="1.0.0",
- es.uji.control.domain.spi;version="1.0.0"
+Import-Package: es.uji.control.domain.service.connectionfactory;version="1.0.0",
+ es.uji.control.domain.spi;version="1.0.0",
+ es.uji.control.domain.subsystem.authorizations;version="1.0.0",
+ es.uji.control.domain.subsystem.people;version="1.0.0",
+ org.osgi.framework;version="1.8.0",
+ org.osgi.service.component;version="1.2.2",
+ org.osgi.service.component.annotations;version="1.2.0",
+ org.osgi.service.prefs;version="1.1.1"
+Service-Component: OSGI-INF/factory.ujioracle.xml
