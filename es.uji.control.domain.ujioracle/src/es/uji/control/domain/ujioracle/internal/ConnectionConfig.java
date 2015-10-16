@@ -35,5 +35,9 @@ final public class ConnectionConfig {
 	public String getSid() {
 		return sid;
 	}
+	
+	public boolean isValid() {
+		return false;
+	}
 
 }

@@ -26,17 +26,19 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	private PreferencesService preferencesService;
 
 	private ServiceRegistration<IControlConnectionFactorySPI> registration;
-	private ConnectionFactorySPIImpl impl;
+	private ConnectionFactoryImpl impl;
 	
 	@Activate
 	public void activate(ComponentContext componentContext) throws Exception {
+		// Se anota el contexto del Bundle para posteriores operacones
 		this.bundlecontext = componentContext.getBundleContext();
+		// Se registra el factori con la configuracion por defecto
+		registerConnectionFactory();
 	}
 
 	@Deactivate
 	public void deactivate(ComponentContext componentContext) {
-		synchronized (this) {
-		}
+		unregisterConnectionFactory();
 	}
 
 	@Reference(policy=ReferencePolicy.STATIC, cardinality=ReferenceCardinality.MANDATORY, name="preferences")
@@ -104,16 +106,23 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 			
 		} else {
 			
-			// Se preparan los atributos para la publicacion del servicio
-			Hashtable<String, Object> properties = new Hashtable<>();
-			properties.put(IControlConnectionFactorySPI.CONNECTION_FACTORY_KEY, CONNECTION_FACTORY_KEY_VALUE);
-			properties.put(IControlConnectionFactorySPI.CONNECTION_FACTORY_DESCRIPTION, CONNECTION_FACTORY_DESCRIPTION_VALUE);
+			// Se lee la configuracion
+			ConnectionConfig config = readConfig();
 			
-			// Se instancia el servicio
-			impl = new ConnectionFactorySPIImpl(readConfig());
+			if (config.isValid()) {
 			
-			// Se registra el servicio
-			registration = bundlecontext.registerService(IControlConnectionFactorySPI.class, impl, properties);
+				// Se preparan los atributos para la publicacion del servicio
+				Hashtable<String, Object> properties = new Hashtable<>();
+				properties.put(IControlConnectionFactorySPI.CONNECTION_FACTORY_KEY, CONNECTION_FACTORY_KEY_VALUE);
+				properties.put(IControlConnectionFactorySPI.CONNECTION_FACTORY_DESCRIPTION, CONNECTION_FACTORY_DESCRIPTION_VALUE);
+				
+				// Se instancia el servicio
+				impl = new ConnectionFactoryImpl(config);
+				
+				// Se registra el servicio
+				registration = bundlecontext.registerService(IControlConnectionFactorySPI.class, impl, properties);
+				
+			}
 			
 		}
 		

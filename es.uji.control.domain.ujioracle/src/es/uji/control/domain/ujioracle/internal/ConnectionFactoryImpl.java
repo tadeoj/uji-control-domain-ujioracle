@@ -15,13 +15,13 @@ import es.uji.control.domain.subsystem.people.IPersonService;
 import es.uji.control.domain.ujioracle.internal.authorizations.AuthorizationsImpl;
 import es.uji.control.domain.ujioracle.internal.people.PersonImpl;
 
-class ConnectionFactorySPIImpl implements IControlConnectionFactorySPI {
+class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 	
 	final private AtomicBoolean cleaned = new AtomicBoolean(false); 
 	private ConnectionConfig config;
 	final private List<ControlConnectionImpl> connections = new ArrayList<>();
 	
-	public ConnectionFactorySPIImpl(ConnectionConfig config) {
+	public ConnectionFactoryImpl(ConnectionConfig config) {
 		this.config = config;
 	}
 
@@ -68,16 +68,16 @@ class ConnectionFactorySPIImpl implements IControlConnectionFactorySPI {
 				this.personImpl = new PersonImpl(entityManager);
 				this.authorizationsImpl = new AuthorizationsImpl(entityManager);
 				// Si todo ha ido bien se registra la conexion.
-				ConnectionFactorySPIImpl.this.connections.add(this);
+				ConnectionFactoryImpl.this.connections.add(this);
 		}
 
 		@Override
 		public void close() {
-			synchronized (ConnectionFactorySPIImpl.this) {
+			synchronized (ConnectionFactoryImpl.this) {
 				// Se cierrar la conexion
 				closeConnection();
 				// Se des-registra
-				ConnectionFactorySPIImpl.this.connections.remove(this);
+				ConnectionFactoryImpl.this.connections.remove(this);
 			}
 		}
 
