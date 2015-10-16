@@ -1,7 +1,8 @@
 package es.uji.control.domain.ujioracle.internal.people;
 
-import java.sql.Connection;
 import java.util.Set;
+
+import javax.persistence.EntityManager;
 
 import es.uji.control.domain.service.connectionfactory.ControlConnectionException;
 import es.uji.control.domain.subsystem.people.ILinkage;
@@ -12,7 +13,10 @@ import es.uji.control.domain.subsystem.people.IPhotoStream;
 
 public class PersonImpl implements IPersonService {
 
-	public PersonImpl(Connection connection) throws ControlConnectionException {
+	private EntityManager entityManager;
+
+	public PersonImpl(EntityManager entityManager) throws ControlConnectionException {
+		this.entityManager = entityManager;
 	}
 
 	@Override

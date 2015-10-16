@@ -13,8 +13,6 @@ import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.prefs.PreferencesService;
 
-import es.uji.control.domain.service.connectionfactory.ControlConnectionException;
-import es.uji.control.domain.service.connectionfactory.IControlConnection;
 import es.uji.control.domain.spi.IControlConnectionFactorySPI;
 import es.uji.control.domain.ujioracle.UjiOracleConnectionFactoryConfig;
 
@@ -27,6 +25,9 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	private BundleContext bundlecontext;
 	private PreferencesService preferencesService;
 
+	private ServiceRegistration<IControlConnectionFactorySPI> registration;
+	private ConnectionFactorySPIImpl impl;
+	
 	@Activate
 	public void activate(ComponentContext componentContext) throws Exception {
 		this.bundlecontext = componentContext.getBundleContext();
@@ -49,53 +50,89 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 		this.preferencesService = null;
 	}
 
+	private void writeConfig(ConnectionConfig config) {
+		// TODO: 
+	}
+	
+	private ConnectionConfig readConfig() {
+		return null; // TODO:
+	}
 	
 	@Override
-	public void setURL(String url) {
+	public void setURL(String url, String user, String password, String schema, String sid) {
+		
+		// Se desregistra el servicio
+		unregisterConnectionFactory();
+		
+		// Se almazena la nueva configuracion
+		writeConfig(new ConnectionConfig(url, user, password, schema, sid));
+		
+		// Se registra de nuevo el servicio (ahora utilizara la nueva configuracion)
+		registerConnectionFactory();
+		
 	}
-
+	
 	@Override
 	public String getURL() {
-		return null;
+		return readConfig().getURL();
 	}
 	
-	private ServiceRegistration<IControlConnectionFactorySPI> registration;
-	private ConnectionFactorySPIImpl impl;
+	@Override
+	public String getUser() {
+		return readConfig().getUser();
+	}
+	
+	@Override
+	public String getPassword() {
+		return readConfig().getPassword();
+	}
+	
+	@Override
+	public String getSchema() {
+		return readConfig().getSchema();
+	}
+	
+	@Override
+	public String getSid() {
+		return readConfig().getSid();
+	}
 	
 	private void registerConnectionFactory() {
 		if (registration != null) {
+			
 			throw new IllegalStateException("El servicio ya esta registrado.");
+			
 		} else {
+			
+			// Se preparan los atributos para la publicacion del servicio
 			Hashtable<String, Object> properties = new Hashtable<>();
 			properties.put(IControlConnectionFactorySPI.CONNECTION_FACTORY_KEY, CONNECTION_FACTORY_KEY_VALUE);
 			properties.put(IControlConnectionFactorySPI.CONNECTION_FACTORY_DESCRIPTION, CONNECTION_FACTORY_DESCRIPTION_VALUE);
-			impl = new ConnectionFactorySPIImpl();
+			
+			// Se instancia el servicio
+			impl = new ConnectionFactorySPIImpl(readConfig());
+			
+			// Se registra el servicio
 			registration = bundlecontext.registerService(IControlConnectionFactorySPI.class, impl, properties);
+			
 		}
 		
 	}
 	
 	private void unregisterConnectionFactory() {
 		if (registration != null) {
+			
+			// Se desregistra el servicio
 			registration.unregister();
-			registration = null;
-			impl.reset();
-			impl = null;
-		}
-	}
-	
-	private class ConnectionFactorySPIImpl implements IControlConnectionFactorySPI {
 
-		@Override
-		public IControlConnection createConnection() throws ControlConnectionException {
-			// TODO Auto-generated method stub
-			return null;
-		}
-		
-		public void reset() {
+			// Se resetea el factory (limpia todos sus recursos)
+			impl.reset();
+			
+			// Por simetria se liberan ambas referencias
+			registration = null;
+			impl = null;
 			
 		}
-		
 	}
 
 }
