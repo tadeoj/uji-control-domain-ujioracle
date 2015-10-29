@@ -19,7 +19,7 @@
    <extension
          point="com.opcoach.e4.preferences.e4PreferencePages">
       <page
-            class="es.uji.control.domain.jdbc.preferences.pages.JDBCPreferencesPage"
+            class="es.uji.control.domain.jdbc.preferences.internal.pages.JDBCPreferencesPage"
             id="es.uji.control.domain.jdbc.preferences.page1"
             name="Conexión JDBC">
       </page>

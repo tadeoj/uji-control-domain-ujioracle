@@ -6,7 +6,6 @@
     La llicència completa es pot descarregar de 
     https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11
  -->
-
 <feature
       id="es.uji.control.domain.ujioracle.feature"
       label="Feature"
@@ -32,14 +31,14 @@
          id="es.uji.control.domain.ujioracle"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
    <plugin
          id="es.uji.control.domain.ujioracle.preferences"
          download-size="0"
          install-size="0"
-         version="0.0.0"
+         version="1.0.0.qualifier"
          unpack="false"/>
 
 </feature>

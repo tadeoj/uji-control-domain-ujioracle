@@ -5,7 +5,7 @@
  * La llicència completa es pot descarregar de 
  * https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11
  *******************************************************************************/
-package es.uji.control.domain.jdbc.preferences.pages;
+package es.uji.control.domain.jdbc.preferences.internal.pages;
 
 import org.eclipse.jface.preference.BooleanFieldEditor;
 import org.eclipse.jface.preference.ColorFieldEditor;

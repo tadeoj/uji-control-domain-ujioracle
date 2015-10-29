@@ -15,12 +15,9 @@ import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
 public class JDBCPStoreProvider implements IPreferenceStoreProvider {
 
-	public JDBCPStoreProvider() {
-	}
-
 	@Override
 	public IPreferenceStore getPreferenceStore() {
-		return new ScopedPreferenceStore(InstanceScope.INSTANCE, "es.uji.control.domain.jdbc.preferences");
+		return new ScopedPreferenceStore(InstanceScope.INSTANCE, "es.uji.control.domain.ujioracle.preferences");
 	}
 
 }

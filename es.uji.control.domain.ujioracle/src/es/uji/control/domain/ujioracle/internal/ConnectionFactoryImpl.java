@@ -12,8 +12,6 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.Persistence;
 
 import es.uji.control.domain.service.connectionfactory.ControlConnectionException;
 import es.uji.control.domain.service.connectionfactory.ControlNotImplementedException;
@@ -38,7 +36,7 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 	public IControlConnection createConnection() throws ControlConnectionException {
 		synchronized (this) {
 			if (cleaned.get()) {
-				throw new ControlConnectionException("Este factory ya no se puede utilizar porquer ha sido cerrado", null);
+				throw new ControlConnectionException("Este factory ya no se puede utilizar porque ha sido cerrado", null);
 			} else {
 				try {
 					// Se intenta abrir la conexion
@@ -83,7 +81,7 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 		@Override
 		public void close() {
 			synchronized (ConnectionFactoryImpl.this) {
-				// Se cierrar la conexion
+				// Se cierra la conexion
 				closeConnection();
 				// Se des-registra
 				ConnectionFactoryImpl.this.connections.remove(this);
