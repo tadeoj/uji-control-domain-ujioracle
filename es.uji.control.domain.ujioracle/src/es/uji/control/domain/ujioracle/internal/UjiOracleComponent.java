@@ -18,6 +18,7 @@ import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.component.annotations.Reference;
 import org.osgi.service.component.annotations.ReferenceCardinality;
 import org.osgi.service.component.annotations.ReferencePolicy;
+import org.osgi.service.prefs.Preferences;
 import org.osgi.service.prefs.PreferencesService;
 
 import es.uji.control.domain.spi.IControlConnectionFactorySPI;
@@ -31,6 +32,7 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 
 	private BundleContext bundlecontext;
 	private PreferencesService preferencesService;
+	private Preferences preferences;
 
 	private ServiceRegistration<IControlConnectionFactorySPI> registration;
 	private ConnectionFactoryImpl impl;
@@ -52,6 +54,7 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	public void bindPreferences(PreferencesService preferencesService) {
 		// Se anota el servicio de registro
 		this.preferencesService = preferencesService;
+		preferences = preferencesService.getUserPreferences("es.uji.control.domain.ujioracle.preferences.prefs");		
 	}
 	
 	public void unbindPreferences(PreferencesService preferencesService) {
@@ -60,7 +63,7 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	}
 
 	private void writeConfig(ConnectionConfig config) {
-		// TODO: 
+		// TODO:
 	}
 	
 	private ConnectionConfig readConfig() {

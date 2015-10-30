@@ -5,7 +5,7 @@
  * La llicència completa es pot descarregar de 
  * https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11
  *******************************************************************************/
-package es.uji.control.domain.jdbc.preferences;
+package es.uji.control.domain.ujioracle.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;
@@ -13,11 +13,14 @@ import org.eclipse.jface.preference.IPreferenceStore;
 import com.opcoach.e4.preferences.IPreferenceStoreProvider;
 import com.opcoach.e4.preferences.ScopedPreferenceStore;
 
-public class JDBCPStoreProvider implements IPreferenceStoreProvider {
+public class UJIOraclePreferenceStoreProvider implements IPreferenceStoreProvider {
 
+	private IPreferenceStore store;
+	
 	@Override
 	public IPreferenceStore getPreferenceStore() {
-		return new ScopedPreferenceStore(InstanceScope.INSTANCE, "es.uji.control.domain.ujioracle.preferences");
+		store  = new ScopedPreferenceStore(InstanceScope.INSTANCE, "es.uji.control.domain.ujioracle.preferences");
+		return store;
 	}
-
+	
 }
