@@ -12,6 +12,7 @@ import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
 
 import es.uji.control.domain.service.connectionfactory.ControlConnectionException;
 import es.uji.control.domain.service.connectionfactory.ControlNotImplementedException;
@@ -23,11 +24,11 @@ import es.uji.control.domain.ujioracle.internal.authorizations.AuthorizationsImp
 import es.uji.control.domain.ujioracle.internal.people.PersonImpl;
 
 class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
-	
-	final private AtomicBoolean cleaned = new AtomicBoolean(false); 
+
+	final private AtomicBoolean cleaned = new AtomicBoolean(false);
 	private ConnectionConfig config;
 	final private List<ControlConnectionImpl> connections = new ArrayList<>();
-	
+
 	public ConnectionFactoryImpl(ConnectionConfig config) {
 		this.config = config;
 	}
@@ -48,34 +49,35 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 			}
 		}
 	}
-	
+
 	public void reset() {
 		synchronized (this) {
 			if (!cleaned.get()) {
 				// Ya no se podra volver a resetear
 				cleaned.set(true);
-				// Se limpian las conexiones 
+				// Se limpian las conexiones
 				while (connections.size() > 0) {
 					connections.get(0).close();
 				}
 			}
 		}
 	}
-	
+
 	private class ControlConnectionImpl implements IControlConnection {
-		
+
 		private EntityManager entityManager;
+		private EntityManagerFactory entityManagerFactory;
 		private PersonImpl personImpl;
 		private AuthorizationsImpl authorizationsImpl;
-		
+
 		public ControlConnectionImpl(ConnectionConfig config) throws ControlConnectionException {
-				// Se abre la conexion
-				this.entityManager = openConnection();
-				// Se crea la implementacion de los subservicios
-				this.personImpl = new PersonImpl(entityManager);
-				this.authorizationsImpl = new AuthorizationsImpl(entityManager);
-				// Si todo ha ido bien se registra la conexion.
-				ConnectionFactoryImpl.this.connections.add(this);
+			// Se abre la conexion
+			this.entityManager = openConnection();
+			// Se crea la implementacion de los subservicios
+			this.personImpl = new PersonImpl(entityManager);
+			this.authorizationsImpl = new AuthorizationsImpl(entityManager);
+			// Si todo ha ido bien se registra la conexion.
+			ConnectionFactoryImpl.this.connections.add(this);
 		}
 
 		@Override
@@ -89,14 +91,29 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 		}
 
 		private EntityManager openConnection() throws ControlConnectionException {
-			// TODO: Abre conexion (crear el EntinyManager) y SI dispara excepcion si hay problemas...
-			return entityManager;
+//			HashMap<String, Object> properties = new HashMap<String, Object>();
+//			properties.put(PersistenceUnitProperties.CLASSLOADER, UJICard.class.getClassLoader());
+//			properties.put("eclipselink.logging.level", "FINE");
+//			properties.put("eclipselink.logging.timestamp", "false");
+//			properties.put("eclipselink.logging.session", "false");
+//			properties.put("eclipselink.logging.thread", "false");
+//			properties.put("javax.persistence.jdbc.url", "jdbc:oracle:thin:@" + config.getURL() + ":1521:" + config.getSid());
+//			properties.put("javax.persistence.jdbc.user", config.getUser());
+//			properties.put("javax.persistence.jdbc.password", config.getPassword());
+//			properties.put("eclipselink.jdbc.read-connections.min", "3");
+//			properties.put("eclipselink.jdbc.write-connections.min", "3");
+//			properties.put("javax.persistence.jdbc.driver", "oracle.jdbc.driver.OracleDriver");
+//			this.entityManagerFactory = new PersistenceProvider().createEntityManagerFactory("sip", properties);
+//			return entityManagerFactory.createEntityManager();
+			return null;
 		}
-		
+
 		private void closeConnection() {
-			// TODO: Se cierra la conexion y no tratamos excepciones. 
+//			entityManager.clear();
+//			entityManager.close();
+//			entityManagerFactory.close();
 		}
-		
+
 		@Override
 		public IPersonService getPersonService() throws ControlNotImplementedException {
 			return personImpl;
@@ -108,5 +125,5 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 		}
 
 	}
-	
+
 }

@@ -9,48 +9,11 @@ package es.uji.control.domain.ujioracle.preferences.internal;
 
 import org.eclipse.jface.preference.FieldEditorPreferencePage;
 import org.eclipse.jface.preference.StringFieldEditor;
-import org.osgi.framework.BundleContext;
-import org.osgi.service.component.ComponentContext;
-import org.osgi.service.component.annotations.Activate;
-import org.osgi.service.component.annotations.Component;
-import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 
-import es.uji.control.domain.ujioracle.UjiOracleConnectionFactoryConfig;
-
-@Component(name = "ujioracle.preferences", immediate = true)
 public class UJIOraclePreferencesPage extends FieldEditorPreferencePage {
-
-	private UjiOracleConnectionFactoryConfig config;
-	private BundleContext bundlecontext;
-
-	@Activate
-	public void activate(ComponentContext componentContext) throws Exception {
-		this.bundlecontext = componentContext.getBundleContext();
-	}
-
-	@Deactivate
-	public void deactivate(ComponentContext componentContext) {
-		this.bundlecontext = null;
-	}
-
-	public BundleContext getContext() {
-		return this.bundlecontext;
-	}
 
 	public UJIOraclePreferencesPage() {
 		super(GRID);
-	}
-
-	@Reference(policy = ReferencePolicy.STATIC, cardinality = ReferenceCardinality.MANDATORY, name = "ujioracleConnectionFactoryConfig")
-	public void bindUJIOracleConnectionFactoryConfig(UjiOracleConnectionFactoryConfig config) {
-		this.config = config;
-	}
-
-	public void unbindUJIOracleConnectionFactoryConfig(UjiOracleConnectionFactoryConfig config) {
-		this.config = null;
 	}
 	
 	@Override
@@ -60,10 +23,21 @@ public class UJIOraclePreferencesPage extends FieldEditorPreferencePage {
 		
 		addField(new StringFieldEditor("url", "URL : ", getFieldEditorParent()));
 		addField(new StringFieldEditor("user", "Usuario : ", getFieldEditorParent()));
-		addField(new StringFieldEditor("password", "Password : ", getFieldEditorParent()));
+		StringFieldEditor fieldEditor = new StringFieldEditor("password", "Password : ", getFieldEditorParent());
+		addField(fieldEditor);
 		addField(new StringFieldEditor("schema", "Esquema : ", getFieldEditorParent()));
 		addField(new StringFieldEditor("sid", "SID : ", getFieldEditorParent()));
 		
+		fieldEditor.getTextControl(getFieldEditorParent()).setEchoChar('*');
+		
 	}
+	
+	@Override
+	public boolean performOk() {
+		boolean result = super.performOk();
+		UJIOraclePreferencesComponent.getConfig().checkPreferences();
+		return result;
+	}
+	
 
 }

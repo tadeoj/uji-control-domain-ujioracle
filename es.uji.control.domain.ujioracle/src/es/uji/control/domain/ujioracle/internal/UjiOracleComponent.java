@@ -9,17 +9,14 @@ package es.uji.control.domain.ujioracle.internal;
 
 import java.util.Hashtable;
 
+import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.ServiceRegistration;
 import org.osgi.service.component.ComponentContext;
 import org.osgi.service.component.annotations.Activate;
 import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
-import org.osgi.service.component.annotations.Reference;
-import org.osgi.service.component.annotations.ReferenceCardinality;
-import org.osgi.service.component.annotations.ReferencePolicy;
 import org.osgi.service.prefs.Preferences;
-import org.osgi.service.prefs.PreferencesService;
 
 import es.uji.control.domain.spi.IControlConnectionFactorySPI;
 import es.uji.control.domain.ujioracle.UjiOracleConnectionFactoryConfig;
@@ -31,7 +28,6 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	static final String CONNECTION_FACTORY_DESCRIPTION_VALUE = "Backend UJI/Oracle via JDBC";
 
 	private BundleContext bundlecontext;
-	private PreferencesService preferencesService;
 	private Preferences preferences;
 
 	private ServiceRegistration<IControlConnectionFactorySPI> registration;
@@ -41,6 +37,8 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	public void activate(ComponentContext componentContext) throws Exception {
 		// Se anota el contexto del Bundle para posteriores operacones
 		this.bundlecontext = componentContext.getBundleContext();
+		// Se obtienen las preferencias.
+		preferences = InstanceScope.INSTANCE.getNode("es.uji.control.domain.ujioracle.preferences");
 		// Se registra el factori con la configuracion por defecto
 		registerConnectionFactory();
 	}
@@ -49,35 +47,26 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	public void deactivate(ComponentContext componentContext) {
 		unregisterConnectionFactory();
 	}
-
-	@Reference(policy=ReferencePolicy.STATIC, cardinality=ReferenceCardinality.MANDATORY, name="preferences")
-	public void bindPreferences(PreferencesService preferencesService) {
-		// Se anota el servicio de registro
-		this.preferencesService = preferencesService;
-		preferences = preferencesService.getUserPreferences("es.uji.control.domain.ujioracle.preferences.prefs");		
-	}
-	
-	public void unbindPreferences(PreferencesService preferencesService) {
-		// Se resetea el servicio de registro
-		this.preferencesService = null;
-	}
-
-	private void writeConfig(ConnectionConfig config) {
-		// TODO:
-	}
 	
 	private ConnectionConfig readConfig() {
-		return null; // TODO:
+		String url = preferences.get("url", "");
+		String user = preferences.get("user", "");
+		String password = preferences.get("password", "");
+		String schema = preferences.get("schema", "");
+		String sid = preferences.get("sid", "");
+		
+		if (url != "" && user != "" && password != "" && schema != "" && sid != "") {
+			return new ConnectionConfig(url, user, password, schema, sid, true);
+		} else {
+			return new ConnectionConfig(url, user, password, schema, sid, false);
+		}
 	}
 	
 	@Override
-	public void setURL(String url, String user, String password, String schema, String sid) {
+	public void checkPreferences() {
 		
 		// Se desregistra el servicio
 		unregisterConnectionFactory();
-		
-		// Se almazena la nueva configuracion
-		writeConfig(new ConnectionConfig(url, user, password, schema, sid));
 		
 		// Se registra de nuevo el servicio (ahora utilizara la nueva configuracion)
 		registerConnectionFactory();

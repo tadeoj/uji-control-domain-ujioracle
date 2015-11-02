@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jdbc
-Bundle-SymbolicName: es.uji.control.domain.ujioracle
+Bundle-SymbolicName: es.uji.control.domain.ujioracle;singleton:=true
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: es.uji.control.domain.service.connectionfactory;version="1.0.0",
@@ -9,9 +9,11 @@ Import-Package: es.uji.control.domain.service.connectionfactory;version="1.0.0",
  es.uji.control.domain.subsystem.authorizations;version="1.0.0",
  es.uji.control.domain.subsystem.people;version="1.0.0",
  javax.persistence;version="2.1.0",
+ org.eclipse.core.runtime.preferences;version="3.3.0",
  org.osgi.framework;version="1.8.0",
  org.osgi.service.component;version="1.2.2",
  org.osgi.service.component.annotations;version="1.2.0",
  org.osgi.service.prefs;version="1.1.1"
 Service-Component: OSGI-INF/factory.ujioracle.xml
 Export-Package: es.uji.control.domain.ujioracle
+Bundle-ActivationPolicy: lazy

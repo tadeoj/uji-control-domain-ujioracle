@@ -14,13 +14,15 @@ final public class ConnectionConfig {
 	private String password;
 	private String schema;
 	private String sid;
+	private boolean valid;
 
-	public ConnectionConfig(String url, String user, String password, String schema, String sid) {
+	public ConnectionConfig(String url, String user, String password, String schema, String sid, boolean valid) {
 		this.url = url;
 		this.user = user;
 		this.password = password;
 		this.schema = schema;
 		this.sid = sid;
+		this.valid = valid;
 	}
 	
 	public String getURL() {
@@ -44,7 +46,7 @@ final public class ConnectionConfig {
 	}
 	
 	public boolean isValid() {
-		return false;
+		return valid;
 	}
 
 }
