@@ -105,7 +105,7 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 //			properties.put("javax.persistence.jdbc.driver", "oracle.jdbc.driver.OracleDriver");
 //			this.entityManagerFactory = new PersistenceProvider().createEntityManagerFactory("sip", properties);
 //			return entityManagerFactory.createEntityManager();
-			return null;
+			throw new ControlConnectionException("Not Implemented");
 		}
 
 		private void closeConnection() {
