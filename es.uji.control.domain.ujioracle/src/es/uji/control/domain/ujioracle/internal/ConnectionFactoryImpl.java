@@ -8,11 +8,15 @@
 package es.uji.control.domain.ujioracle.internal;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+
+import org.eclipse.persistence.config.PersistenceUnitProperties;
+import org.eclipse.persistence.jpa.PersistenceProvider;
 
 import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
 import es.uji.control.domain.provider.service.connectionfactory.ControlNotImplementedException;
@@ -22,6 +26,7 @@ import es.uji.control.domain.provider.subsystem.authorizations.IAuthorizationsSe
 import es.uji.control.domain.provider.subsystem.people.IPersonService;
 import es.uji.control.domain.ujioracle.internal.authorizations.AuthorizationsImpl;
 import es.uji.control.domain.ujioracle.internal.people.PersonImpl;
+import es.uji.control.domain.ujioracle.internal.people.entities.UJICard;
 
 class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 
@@ -37,7 +42,8 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 	public IControlConnection createConnection() throws ControlConnectionException {
 		synchronized (this) {
 			if (cleaned.get()) {
-				throw new ControlConnectionException("Este factory ya no se puede utilizar porque ha sido cerrado", null);
+				throw new ControlConnectionException("Este factory ya no se puede utilizar porque ha sido cerrado",
+						null);
 			} else {
 				try {
 					// Se intenta abrir la conexion
@@ -91,27 +97,31 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 		}
 
 		private EntityManager openConnection() throws ControlConnectionException {
-//			HashMap<String, Object> properties = new HashMap<String, Object>();
-//			properties.put(PersistenceUnitProperties.CLASSLOADER, UJICard.class.getClassLoader());
-//			properties.put("eclipselink.logging.level", "FINE");
-//			properties.put("eclipselink.logging.timestamp", "false");
-//			properties.put("eclipselink.logging.session", "false");
-//			properties.put("eclipselink.logging.thread", "false");
-//			properties.put("javax.persistence.jdbc.url", "jdbc:oracle:thin:@" + config.getURL() + ":1521:" + config.getSid());
-//			properties.put("javax.persistence.jdbc.user", config.getUser());
-//			properties.put("javax.persistence.jdbc.password", config.getPassword());
-//			properties.put("eclipselink.jdbc.read-connections.min", "3");
-//			properties.put("eclipselink.jdbc.write-connections.min", "3");
-//			properties.put("javax.persistence.jdbc.driver", "oracle.jdbc.driver.OracleDriver");
-//			this.entityManagerFactory = new PersistenceProvider().createEntityManagerFactory("sip", properties);
-//			return entityManagerFactory.createEntityManager();
-			throw new ControlConnectionException("Not Implemented");
+			HashMap<String, Object> properties = new HashMap<String, Object>();
+			properties.put(PersistenceUnitProperties.CLASSLOADER, UJICard.class.getClassLoader());
+			properties.put("eclipselink.logging.level", "FINE");
+			properties.put("eclipselink.logging.timestamp", "false");
+			properties.put("eclipselink.logging.session", "false");
+			properties.put("eclipselink.logging.thread", "false");
+			properties.put("javax.persistence.jdbc.url", "jdbc:oracle:thin:@" + config.getURL() + ":1521:" + config.getSid());
+			properties.put("javax.persistence.jdbc.user", config.getUser());
+			properties.put("javax.persistence.jdbc.password", config.getPassword());
+			properties.put("eclipselink.jdbc.read-connections.min", "3");
+			properties.put("eclipselink.jdbc.write-connections.min", "3");
+			properties.put("javax.persistence.jdbc.driver", "oracle.jdbc.driver.OracleDriver");
+			
+			try {
+				this.entityManagerFactory = new PersistenceProvider().createEntityManagerFactory("sip", properties);
+				return entityManagerFactory.createEntityManager();
+			} catch (Exception e) {
+				throw new ControlConnectionException("No se ha podido establecer la conexión con la base de datos.");
+			}
 		}
 
 		private void closeConnection() {
-//			entityManager.clear();
-//			entityManager.close();
-//			entityManagerFactory.close();
+			entityManager.clear();
+			entityManager.close();
+			entityManagerFactory.close();
 		}
 
 		@Override
