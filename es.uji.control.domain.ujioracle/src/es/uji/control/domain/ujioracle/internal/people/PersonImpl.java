@@ -13,12 +13,14 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
-import es.uji.control.domain.service.connectionfactory.ControlConnectionException;
-import es.uji.control.domain.subsystem.people.IAccreditation;
-import es.uji.control.domain.subsystem.people.IPersonIdentifier;
-import es.uji.control.domain.subsystem.people.IPersonService;
-import es.uji.control.domain.subsystem.people.IPersonStream;
-import es.uji.control.domain.subsystem.people.IPhotoStream;
+import es.uji.control.domain.people.IAccreditation;
+import es.uji.control.domain.people.IPersonIdentifier;
+import es.uji.control.domain.people.IPhotoStream;
+import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
+import es.uji.control.domain.provider.subsystem.people.IPersonService;
+import es.uji.control.domain.provider.subsystem.people.IPersonStream;
+import es.uji.control.domain.ujioracle.internal.people.entities.UJICard;
+import es.uji.control.domain.ujioracle.internal.people.entities.UJILinkage;
 import es.uji.control.domain.ujioracle.internal.people.entities.UJIPerson;
 
 public class PersonImpl implements IPersonService {
@@ -33,15 +35,22 @@ public class PersonImpl implements IPersonService {
 	public IPersonStream getAllPersons() throws ControlConnectionException {
 		
 		List<UJIPerson> ujiPersonList = new ArrayList<>(1);
+		List<UJICard> ujiCardList = new ArrayList<>(1);
+		List<UJILinkage> ujiLinkageList = new ArrayList<>(1);
 		
 		try {
 			entityManager.getTransaction().begin();
-			TypedQuery<UJIPerson> cardsQuery = entityManager.createQuery("select x from UJIPerson x", UJIPerson.class);
-			ujiPersonList = cardsQuery.getResultList();
-	
-			//TODO: FALTA implementar...			
+			
+			TypedQuery<UJIPerson> personsQuery = entityManager.createQuery("select x from UJIPerson x order by x.perId", UJIPerson.class);
+			ujiPersonList = personsQuery.getResultList();
+			
+			TypedQuery<UJICard> cardsQuery = entityManager.createQuery("select x from UJIPerson x order by x.perId", UJICard.class);
+			ujiCardList = cardsQuery.getResultList();
+			
+//			TypedQuery<UJILinkage> personsQuery = entityManager.createQuery("select x from UJILinkage x order by x.perId", UJIPerson.class);
+//			ujiPersonList = personsQuery.getResultList();
+//	
 			entityManager.getTransaction().commit();
-
 		} catch (Exception ex) {
 			entityManager.getTransaction().rollback();
 			entityManager.clear();

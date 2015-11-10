@@ -9,7 +9,7 @@ package es.uji.control.domain.ujioracle.internal.authorizations;
 
 import javax.persistence.EntityManager;
 
-import es.uji.control.domain.subsystem.authorizations.IAuthorizationsService;
+import es.uji.control.domain.provider.subsystem.authorizations.IAuthorizationsService;
 
 public class AuthorizationsImpl implements IAuthorizationsService {
 

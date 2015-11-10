@@ -18,7 +18,7 @@ import org.osgi.service.component.annotations.Component;
 import org.osgi.service.component.annotations.Deactivate;
 import org.osgi.service.prefs.Preferences;
 
-import es.uji.control.domain.spi.IControlConnectionFactorySPI;
+import es.uji.control.domain.provider.spi.IControlConnectionFactorySPI;
 import es.uji.control.domain.ujioracle.UjiOracleConnectionFactoryConfig;
 
 @Component(name="factory.ujioracle", immediate=true)

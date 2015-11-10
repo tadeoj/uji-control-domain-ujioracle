@@ -14,12 +14,12 @@ import java.util.concurrent.atomic.AtomicBoolean;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 
-import es.uji.control.domain.service.connectionfactory.ControlConnectionException;
-import es.uji.control.domain.service.connectionfactory.ControlNotImplementedException;
-import es.uji.control.domain.service.connectionfactory.IControlConnection;
-import es.uji.control.domain.spi.IControlConnectionFactorySPI;
-import es.uji.control.domain.subsystem.authorizations.IAuthorizationsService;
-import es.uji.control.domain.subsystem.people.IPersonService;
+import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
+import es.uji.control.domain.provider.service.connectionfactory.ControlNotImplementedException;
+import es.uji.control.domain.provider.service.connectionfactory.IControlConnection;
+import es.uji.control.domain.provider.spi.IControlConnectionFactorySPI;
+import es.uji.control.domain.provider.subsystem.authorizations.IAuthorizationsService;
+import es.uji.control.domain.provider.subsystem.people.IPersonService;
 import es.uji.control.domain.ujioracle.internal.authorizations.AuthorizationsImpl;
 import es.uji.control.domain.ujioracle.internal.people.PersonImpl;
 
