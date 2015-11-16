@@ -7,6 +7,7 @@
  *******************************************************************************/
 package es.uji.control.domain.ujioracle.internal.people;
 
+import java.nio.ByteBuffer;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -14,6 +15,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.TypedQuery;
 
 import es.uji.control.domain.people.AccreditationBuilder;
+import es.uji.control.domain.people.AccreditationInfoBuilder;
 import es.uji.control.domain.people.AccreditationType;
 import es.uji.control.domain.people.IAccreditation;
 import es.uji.control.domain.people.IPersonIdentifier;
@@ -81,11 +83,14 @@ public class PersonImpl implements IPersonService {
 				if (ujiCard.getPerId() == ujiPerson.getPerId()) {
 					AccreditationBuilder accreditationBuilder = new AccreditationBuilder();
 					accreditationBuilder.setType(AccreditationType.MIFARE_SERIAL_NUMBER);
-					accreditationBuilder.setRaw(Long.toString(ujiCard.getSerialNumber()));
-					accreditationBuilder.setEmisionDate(ujiCard.getFEmision());
-					accreditationBuilder.setCancelationDate(ujiCard.getFCancelacion());
+					accreditationBuilder.setRaw(ByteUtils.longToBytes(ujiCard.getSerialNumber()));
 					
-					personBuilder.addAccreditation(accreditationBuilder.build());
+					AccreditationInfoBuilder accreditationInfoBuilder = new AccreditationInfoBuilder();
+					accreditationInfoBuilder.setCancelationDate(ujiCard.getFCancelacion());
+					accreditationInfoBuilder.setEmisionDate(ujiCard.getFEmision());
+					accreditationInfoBuilder.setAccreditation(accreditationBuilder.build());
+					
+					personBuilder.addAccreditation(accreditationInfoBuilder.build());
 				}
 				
 			}
@@ -101,28 +106,45 @@ public class PersonImpl implements IPersonService {
 				
 			}
 			
+			// TODO: Falta implementar el callback
+			
 		}
 
 	}
 
-
 	@Override
 	public void getPerson(IAccreditation accreditation, IPersonStream personStream) throws ControlConnectionException {
-		// TODO Auto-generated method stub
 		
+
 	}
 
 	@Override
 	public void getAllPhotos(IPhotoStream photoStream) throws ControlConnectionException {
 		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
 	public void getPhoto(IPersonIdentifier personIdentifier, IPhotoStream photoStream)
 			throws ControlConnectionException {
 		// TODO Auto-generated method stub
+
+	}
+
+	public static class ByteUtils {
 		
+		private static ByteBuffer buffer = ByteBuffer.allocate(Long.BYTES);
+
+		public static byte[] longToBytes(long x) {
+			buffer.putLong(0, x);
+			return buffer.array();
+		}
+
+		public static long bytesToLong(byte[] bytes) {
+			buffer.put(bytes, 0, bytes.length);
+			buffer.flip();
+			return buffer.getLong();
+		}
 	}
 
 }
