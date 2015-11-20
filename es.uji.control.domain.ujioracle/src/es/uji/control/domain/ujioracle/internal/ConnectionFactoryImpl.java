@@ -122,6 +122,8 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 			entityManager.clear();
 			entityManager.close();
 			entityManagerFactory.close();
+			
+			personImpl.reset();
 		}
 
 		@Override
