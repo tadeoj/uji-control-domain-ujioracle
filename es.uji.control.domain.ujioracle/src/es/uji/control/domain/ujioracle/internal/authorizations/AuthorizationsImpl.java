@@ -7,15 +7,14 @@
  *******************************************************************************/
 package es.uji.control.domain.ujioracle.internal.authorizations;
 
-import javax.persistence.EntityManager;
+import java.sql.Connection;
 
+import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
 import es.uji.control.domain.provider.subsystem.authorizations.IAuthorizationsService;
 
 public class AuthorizationsImpl implements IAuthorizationsService {
 
-	private EntityManager entityManager;
-
-	public AuthorizationsImpl(EntityManager entityManager) {
-		this.entityManager = entityManager;
+	public AuthorizationsImpl(Connection connection) throws ControlConnectionException {
+		throw new ControlConnectionException("No implementado.");
 	}
 }

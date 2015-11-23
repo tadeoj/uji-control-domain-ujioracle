@@ -18,11 +18,11 @@ public class PersonConnectionContext implements Closeable {
 	public PersonConnectionContext(Connection connection) throws SQLException {
 		// Se anota la conexion
 		this.connection = connection;
-		// Se preparan las senetencias
+		// Se preparan las sentencias
 		try {
-			getAllPersonsStatement = getConnection().prepareStatement("SELECT OBJECTTYPE, OBJECTID, ACTIVETS, INACTIVETS, ALARMFAMILY FROM APP.IRR_ALARMS");
-			getAccreditationInfoStatement = getConnection().prepareStatement("SELECT OBJECTTYPE, OBJECTID, ACTIVETS, INACTIVETS, ALARMFAMILY FROM APP.IRR_ALARMS WHERE ID=?");
-			getLinkagesStatement = getConnection().prepareStatement("SELECT OBJECTTYPE, OBJECTID, ACTIVETS, INACTIVETS, ALARMFAMILY FROM APP.IRR_ALARMS WHERE ID=?");
+			getAllPersonsStatement = getConnection().prepareStatement("SELECT PER_ID, IDENTIFICACION, APELLIDO1, APELLIDO2, NOMBRE FROM GRI_PER.SCU_V_PERSONAS");
+			getAccreditationInfoStatement = getConnection().prepareStatement("SELECT PER_ID, SERIAL_NUMBER, F_EMISION, F_CANCELACION FROM GRI_PER.SCU_V_TARJETAS WHERE PER_ID=?");
+			getLinkagesStatement = getConnection().prepareStatement("SELECT ID, SVI_NOMBRE FROM GRI_PER.PER_VW_PERSONAS_SUBVINCULOS WHERE ID=?");
 		} catch (SQLException sqlEx) {
 			try {
 				close();
