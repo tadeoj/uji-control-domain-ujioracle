@@ -40,8 +40,10 @@ public class AllPersonCall {
 	public void run() throws ControlConnectionException {
 
 		try {
+			ResultSet rset = context.getAllPersonsResultSet();
+
 			for (;;) {
-				List<IPerson> block = getBlockOfPersons();
+				List<IPerson> block = getBlockOfPersons(rset);
 				if (block.size() == 0) {
 					personStream.onCompleted();
 					break;
@@ -55,13 +57,10 @@ public class AllPersonCall {
 
 	}
 
-	private List<IPerson> getBlockOfPersons() throws Exception {
-
+	private List<IPerson> getBlockOfPersons(ResultSet rset) throws Exception {
 		ArrayList<IPerson> persons = new ArrayList<>();
-
-		ResultSet rset = context.getAllPersonsResultSet();
-
-		while (rset.next() && persons.size() >= BLOCK_SIZE) {
+		
+		while (rset.next() && persons.size() <= BLOCK_SIZE) {
 
 			long perId = rset.getLong(1);
 
@@ -122,6 +121,8 @@ public class AllPersonCall {
 
 			Date emisionDate = rset.getDate(3);
 			Date cancelationDate = rset.getDate(4);
+			
+			// TODO:: La fecha de cancelación y de emsión pueden estar a null OJO con la conversión.
 			
 			Instant instantEmision = Instant.ofEpochMilli(emisionDate.getTime());
 			LocalDateTime emision = LocalDateTime.ofInstant(instantEmision, ZoneId.systemDefault());
