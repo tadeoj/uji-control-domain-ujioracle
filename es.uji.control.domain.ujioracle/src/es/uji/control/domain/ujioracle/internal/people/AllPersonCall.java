@@ -2,6 +2,9 @@ package es.uji.control.domain.ujioracle.internal.people;
 
 import java.sql.Date;
 import java.sql.ResultSet;
+import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -60,22 +63,17 @@ public class AllPersonCall {
 
 		while (rset.next() && persons.size() >= BLOCK_SIZE) {
 
-			// Se extrae el perId
 			long perId = rset.getLong(1);
 
-			// La lista de acreditaciones
 			List<IAccreditationInfo> accreditationsInfo = getAcreditationsInfo(perId);
 
-			// La lista de vinculaciones
 			List<ILinkage> linkages = getLinkages(perId);
 
-			// El identificador de la persona
 			IPersonIdentifier personIdentifier = new PersonIdentifierBuilder()
 					.setType(PersonIdentifierType.GENERAL_LONG_ID)
 					.setRaw(PersonIdentifierType.generalLongIdToBytes(perId))
 					.build();
 
-			// La persona
 			String name = rset.getString(5);
 			if (rset.wasNull()) {
 				name = "";
@@ -102,7 +100,6 @@ public class AllPersonCall {
 					.setIdentification(identification)
 					.build();
 
-			// Se incluye en la lista
 			persons.add(person);
 		}
 
@@ -125,13 +122,19 @@ public class AllPersonCall {
 
 			Date emisionDate = rset.getDate(3);
 			Date cancelationDate = rset.getDate(4);
+			
+			Instant instantEmision = Instant.ofEpochMilli(emisionDate.getTime());
+			LocalDateTime emision = LocalDateTime.ofInstant(instantEmision, ZoneId.systemDefault());
+			
+			Instant instantCancelation = Instant.ofEpochMilli(cancelationDate.getTime());
+			LocalDateTime cancelation = LocalDateTime.ofInstant(instantCancelation, ZoneId.systemDefault());
+			
 			IAccreditationInfo accreditationsInfo = new AccreditationInfoBuilder()
-					.setEmisionDate(emisionDate)
-					.setCancelationDate(cancelationDate)
+					.setEmisionDate(emision)
+					.setCancelationDate(cancelation)
 					.setAccreditation(accreditation)
 					.build();
 					
-			// Se incluye en la lista
 			acreditationsInfo.add(accreditationsInfo);
 		}
 
