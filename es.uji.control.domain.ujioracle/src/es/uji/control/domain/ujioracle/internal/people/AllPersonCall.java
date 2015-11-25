@@ -26,7 +26,7 @@ import es.uji.control.domain.provider.subsystem.people.IPersonStream;
 
 public class AllPersonCall {
 
-	final static int BLOCK_SIZE = 50;
+	final static int BLOCK_SIZE = 500;
 
 	final private PersonConnectionContext context;
 
