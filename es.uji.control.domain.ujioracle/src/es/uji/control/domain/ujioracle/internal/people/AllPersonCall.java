@@ -60,7 +60,7 @@ public class AllPersonCall {
 	private List<IPerson> getBlockOfPersons(ResultSet rset) throws Exception {
 		ArrayList<IPerson> persons = new ArrayList<>();
 		
-		while (rset.next() && persons.size() <= BLOCK_SIZE) {
+		while (rset.next() && persons.size() < BLOCK_SIZE) {
 
 			long perId = rset.getLong(1);
 
@@ -121,14 +121,17 @@ public class AllPersonCall {
 
 			Date emisionDate = rset.getDate(3);
 			Date cancelationDate = rset.getDate(4);
+						
+			LocalDateTime emision = null;
+			LocalDateTime cancelation = null;
 			
-			// TODO:: La fecha de cancelación y de emsión pueden estar a null OJO con la conversión.
+			if (emisionDate != null) {
+				emision = LocalDateTime.ofInstant(Instant.ofEpochMilli(emisionDate.getTime()), ZoneId.systemDefault());
+			}
 			
-			Instant instantEmision = Instant.ofEpochMilli(emisionDate.getTime());
-			LocalDateTime emision = LocalDateTime.ofInstant(instantEmision, ZoneId.systemDefault());
-			
-			Instant instantCancelation = Instant.ofEpochMilli(cancelationDate.getTime());
-			LocalDateTime cancelation = LocalDateTime.ofInstant(instantCancelation, ZoneId.systemDefault());
+			if (cancelationDate != null) {
+				cancelation = LocalDateTime.ofInstant(Instant.ofEpochMilli(cancelationDate.getTime()), ZoneId.systemDefault());
+			}
 			
 			IAccreditationInfo accreditationsInfo = new AccreditationInfoBuilder()
 					.setEmisionDate(emision)
