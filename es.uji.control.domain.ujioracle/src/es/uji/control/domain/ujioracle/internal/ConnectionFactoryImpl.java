@@ -17,7 +17,6 @@ import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
-import es.uji.control.domain.provider.service.connectionfactory.ControlNotImplementedException;
 import es.uji.control.domain.provider.service.connectionfactory.IControlConnection;
 import es.uji.control.domain.provider.spi.IControlConnectionFactorySPI;
 import es.uji.control.domain.provider.subsystem.authorizations.IAuthorizationsService;
@@ -86,8 +85,6 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 			
 			// Se abre la conexion
 			this.connection = openConnection();
-			// Se crea la implementacion de los subservicios
-			this.personImpl = new PersonImpl(connection);
 			//this.authorizationsImpl = new AuthorizationsImpl(connection);
 			// Si todo ha ido bien se registra la conexion.
 			ConnectionFactoryImpl.this.connections.add(this);
@@ -129,12 +126,30 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 		}
 
 		@Override
-		public IPersonService getPersonService() throws ControlNotImplementedException {
+		public IPersonService getPersonService() throws ControlConnectionException {
+			synchronized (this) {
+				if (personImpl == null) {
+					try {
+						this.personImpl = new PersonImpl(connection);
+					} catch (ControlConnectionException e) {
+						throw new ControlConnectionException(String.format("No se ha podido obtener el subsistema 'Person'"), e);
+					}
+				}
+			}
 			return personImpl;
 		}
 
 		@Override
-		public IAuthorizationsService getAuthorizationsService() throws ControlNotImplementedException {
+		public IAuthorizationsService getAuthorizationsService() throws ControlConnectionException {
+			synchronized (this) {
+				if (authorizationsImpl == null) {
+					try {
+						this.authorizationsImpl = new AuthorizationsImpl(connection);
+					} catch (ControlConnectionException e) {
+						throw new ControlConnectionException(String.format("No se ha podido obtener el subsistema 'Authorizations'"), e);
+					}
+				}
+			}
 			return authorizationsImpl;
 		}
 
