@@ -5,7 +5,7 @@
  * La llicència completa es pot descarregar de 
  * https://joinup.ec.europa.eu/community/eupl/og_page/european-union-public-licence-eupl-v11
  *******************************************************************************/
-package es.uji.control.domain.ujioracle.preferences;
+package es.uji.control.domain.ujioracle.ui.preferences;
 
 import org.eclipse.core.runtime.preferences.InstanceScope;
 import org.eclipse.jface.preference.IPreferenceStore;

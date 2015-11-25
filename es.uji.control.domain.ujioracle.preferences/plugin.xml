@@ -12,16 +12,16 @@
    <extension
          point="com.opcoach.e4.preferences.e4PreferenceStoreProvider">
       <preferenceStoreProvider
-            class="es.uji.control.domain.ujioracle.preferences.UJIOraclePreferenceStoreProvider"
-            pluginId="es.uji.control.domain.ujioracle.preferences">
+            class="es.uji.control.domain.ujioracle.ui.preferences.UJIOraclePreferenceStoreProvider"
+            pluginId="es.uji.control.domain.ujioracle.ui.preferences">
       </preferenceStoreProvider>
    </extension>
    <extension
          point="com.opcoach.e4.preferences.e4PreferencePages">
       <page
             category="es.uji.control.sip.ui.preferences.page"
-            class="es.uji.control.domain.ujioracle.preferences.internal.UJIOraclePreferencesPage"
-            id="es.uji.control.domain.ujioracle.preferences.page"
+            class="es.uji.control.domain.ujioracle.ui.preferences.internal.UJIOraclePreferencesPage"
+            id="es.uji.control.domain.ujioracle.uipreferences.page"
             name="Conexión JDBC">
       </page>
    </extension>

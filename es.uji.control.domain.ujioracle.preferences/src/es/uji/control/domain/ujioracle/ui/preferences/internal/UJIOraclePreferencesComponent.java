@@ -1,4 +1,4 @@
-package es.uji.control.domain.ujioracle.preferences.internal;
+package es.uji.control.domain.ujioracle.ui.preferences.internal;
 
 import org.osgi.framework.BundleContext;
 import org.osgi.service.component.ComponentContext;
