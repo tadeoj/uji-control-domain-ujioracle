@@ -58,7 +58,7 @@ public class AllPersonCall {
 	}
 
 	private List<IPerson> getBlockOfPersons(ResultSet rset) throws Exception {
-		ArrayList<IPerson> persons = new ArrayList<>();
+		ArrayList<IPerson> persons = new ArrayList<>(1);
 		
 		while (rset.next() && persons.size() < BLOCK_SIZE) {
 
@@ -106,7 +106,7 @@ public class AllPersonCall {
 	}
 
 	private List<IAccreditationInfo> getAcreditationsInfo(long perId) throws Exception {
-		ArrayList<IAccreditationInfo> acreditationsInfo = new ArrayList<>();
+		ArrayList<IAccreditationInfo> acreditationsInfo = new ArrayList<>(1);
 
 		ResultSet rset = context.getAccreditationInfoResultSet(perId);
 
@@ -146,7 +146,7 @@ public class AllPersonCall {
 	}
 
 	private List<ILinkage> getLinkages(long perId) throws Exception {
-		ArrayList<ILinkage> linkages = new ArrayList<>();
+		ArrayList<ILinkage> linkages = new ArrayList<>(1);
 		
 		ResultSet rset = context.getLinkagesStatementResultSet(perId);
 
