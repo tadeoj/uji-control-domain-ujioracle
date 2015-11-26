@@ -14,6 +14,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.UUID;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
@@ -33,6 +34,11 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 
 	public ConnectionFactoryImpl(ConnectionConfig config) {
 		this.config = config;
+	}
+
+	@Override
+	public UUID getSignature() {
+		 return UUID.fromString("eed74942-943c-11e5-8994-feff819cdc9f");
 	}
 
 	@Override
