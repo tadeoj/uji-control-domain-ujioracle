@@ -21,7 +21,7 @@
       <page
             category="es.uji.control.sip.ui.preferences.page"
             class="es.uji.control.domain.ujioracle.ui.preferences.internal.UJIOraclePreferencesPage"
-            id="es.uji.control.domain.ujioracle.uipreferences.page"
+            id="es.uji.control.domain.ujioracle.ui.preferences.page"
             name="Conexión JDBC">
       </page>
    </extension>

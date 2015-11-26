@@ -1,7 +1,7 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Jdbc
-Bundle-SymbolicName: es.uji.control.domain.ujioracle;singleton:=true
+Bundle-SymbolicName: es.uji.control.domain.ujioracle
 Bundle-Version: 1.0.0.qualifier
 Bundle-RequiredExecutionEnvironment: JavaSE-1.8
 Import-Package: es.uji.control.domain.people,

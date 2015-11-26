@@ -35,7 +35,11 @@ public class UJIOraclePreferencesPage extends FieldEditorPreferencePage {
 	@Override
 	public boolean performOk() {
 		boolean result = super.performOk();
-		UJIOraclePreferencesComponent.getConfig().checkPreferences();
+		
+		if (UJIOraclePreferencesComponent.getConfig() != null) {
+			UJIOraclePreferencesComponent.getConfig().checkPreferences();
+		}
+		
 		return result;
 	}
 	

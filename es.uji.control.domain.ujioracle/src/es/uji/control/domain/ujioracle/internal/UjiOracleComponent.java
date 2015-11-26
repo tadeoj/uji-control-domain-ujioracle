@@ -37,8 +37,8 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 	public void activate(ComponentContext componentContext) throws Exception {
 		// Se anota el contexto del Bundle para posteriores operacones
 		this.bundlecontext = componentContext.getBundleContext();
-		// Se obtienen las preferencias.
-		preferences = InstanceScope.INSTANCE.getNode("es.uji.control.domain.ujioracle.preferences");
+		// Se obtienen las preferencias, si no existe el fichero se crea..
+		preferences = InstanceScope.INSTANCE.getNode("es.uji.control.domain.ujioracle.ui.preferences");
 		// Se registra el factori con la configuracion por defecto
 		registerConnectionFactory();
 	}
@@ -55,11 +55,7 @@ public class UjiOracleComponent implements UjiOracleConnectionFactoryConfig {
 		String schema = preferences.get("schema", "");
 		String sid = preferences.get("sid", "");
 		
-		if (url != "" && user != "" && password != "" && schema != "" && sid != "") {
-			return new ConnectionConfig(url, user, password, schema, sid, true);
-		} else {
-			return new ConnectionConfig(url, user, password, schema, sid, false);
-		}
+		return new ConnectionConfig(url, user, password, schema, sid, true);
 	}
 	
 	@Override

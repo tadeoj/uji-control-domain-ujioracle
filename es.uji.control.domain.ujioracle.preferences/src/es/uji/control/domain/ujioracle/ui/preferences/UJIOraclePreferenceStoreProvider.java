@@ -19,7 +19,7 @@ public class UJIOraclePreferenceStoreProvider implements IPreferenceStoreProvide
 	
 	@Override
 	public IPreferenceStore getPreferenceStore() {
-		store  = new ScopedPreferenceStore(InstanceScope.INSTANCE, "es.uji.control.domain.ujioracle.preferences");
+		store  = new ScopedPreferenceStore(InstanceScope.INSTANCE, "es.uji.control.domain.ujioracle.ui.preferences");
 		return store;
 	}
 	
