@@ -121,6 +121,7 @@ public class AllPersonCall {
 
 			Date emisionDate = rset.getDate(3);
 			Date cancelationDate = rset.getDate(4);
+			String description = rset.getString(5);
 						
 			LocalDateTime emision = null;
 			LocalDateTime cancelation = null;
@@ -137,6 +138,7 @@ public class AllPersonCall {
 					.setEmisionDate(emision)
 					.setCancelationDate(cancelation)
 					.setAccreditation(accreditation)
+					.setDescription(description)
 					.build();
 					
 			acreditationsInfo.add(accreditationsInfo);

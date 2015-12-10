@@ -21,7 +21,7 @@ public class PersonConnectionContext implements Closeable {
 		// Se preparan las sentencias
 		try {
 			getAllPersonsStatement = getConnection().prepareStatement("SELECT PER_ID, IDENTIFICACION, APELLIDO1, APELLIDO2, NOMBRE FROM GRI_PER.SCU_V_PERSONAS WHERE APELLIDO1 = 'Garcia'");
-			getAccreditationInfoStatement = getConnection().prepareStatement("SELECT PER_ID, SERIAL_NUMBER, F_EMISION, F_CANCELACION FROM GRI_PER.SCU_V_TARJETAS WHERE PER_ID=?");
+			getAccreditationInfoStatement = getConnection().prepareStatement("SELECT PER_ID, SERIAL_NUMBER, F_EMISION, F_CANCELACION, DESCRIPCION FROM GRI_PER.SCU_V_TARJETAS WHERE PER_ID=?");
 			getLinkagesStatement = getConnection().prepareStatement("SELECT ID, SVI_NOMBRE FROM GRI_PER.PER_VW_PERSONAS_SUBVINCULOS WHERE ID=?");
 		} catch (SQLException sqlEx) {
 			try {
