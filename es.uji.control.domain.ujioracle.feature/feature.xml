@@ -25,11 +25,11 @@
 
    <includes
          id="es.uji.control.domain.feature"
-         version="0.0.0"/>
+         version="1.0.0.qualifier"/>
 
    <includes
          id="es.uji.control.domain.ujioracle.osgi.feature"
-         version="0.0.0"/>
+         version="1.0.0.qualifier"/>
 
    <plugin
          id="es.uji.control.domain.ujioracle.ui.preferences"
