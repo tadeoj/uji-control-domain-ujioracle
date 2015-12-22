@@ -13,10 +13,10 @@ import java.sql.SQLException;
 
 import es.uji.control.domain.people.IAccreditation;
 import es.uji.control.domain.people.IPersonIdentifier;
-import es.uji.control.domain.people.IPhotoStream;
 import es.uji.control.domain.provider.service.connectionfactory.ControlConnectionException;
 import es.uji.control.domain.provider.subsystem.people.IPersonService;
 import es.uji.control.domain.provider.subsystem.people.IPersonStream;
+import es.uji.control.domain.provider.subsystem.people.IPhotoStream;
 
 public class PersonImpl implements IPersonService {
 
