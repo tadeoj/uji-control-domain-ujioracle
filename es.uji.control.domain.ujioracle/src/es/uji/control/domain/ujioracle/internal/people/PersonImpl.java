@@ -20,11 +20,13 @@ import es.uji.control.domain.provider.subsystem.people.IPhotoStream;
 
 public class PersonImpl implements IPersonService {
 
-	final private PersonConnectionContext context;
+	final private PersonConnectionContext personContext;
+	final private PhotosConnectionContext photosContext;
 
 	public PersonImpl(Connection connection) throws ControlConnectionException {
 		try {
-			this.context = new PersonConnectionContext(connection);
+			this.personContext = new PersonConnectionContext(connection);
+			this.photosContext = new PhotosConnectionContext(connection);
 		} catch (SQLException e) {
 			throw new ControlConnectionException("Impopsible obtener los recursos necesarios para conextar con la base de datos", e);
 		}
@@ -32,7 +34,7 @@ public class PersonImpl implements IPersonService {
 
 	@Override
 	public void getAllPersons(IPersonStream personStream) throws ControlConnectionException {
-		AllPersonCall call = new AllPersonCall(context, personStream);
+		AllPersonCall call = new AllPersonCall(personContext, personStream);
 		call.run();
 	}
 	
@@ -43,7 +45,8 @@ public class PersonImpl implements IPersonService {
 
 	@Override
 	public void getAllPhotos(IPhotoStream photoStream) throws ControlConnectionException {
-		throw new ControlConnectionException("No implementado.");
+		AllPhotosCall call = new AllPhotosCall(photosContext, photoStream);
+		call.run();
 	}
 
 	@Override
@@ -53,7 +56,8 @@ public class PersonImpl implements IPersonService {
 	
 	public void reset() {
 		try {
-			context.close();
+			personContext.close();
+			photosContext.close();
 		} catch (IOException e) {
 		}
 	}
