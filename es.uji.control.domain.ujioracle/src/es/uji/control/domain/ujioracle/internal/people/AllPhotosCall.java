@@ -58,6 +58,7 @@ public class AllPhotosCall {
 			IPersonIdentifier personIdentifier = new PersonIdentifierBuilder()
 					.setType(PersonIdentifierType.GENERAL_LONG_ID)
 					.setRaw(PersonIdentifierType.generalLongIdToBytes(perId))
+					.setid(perId)
 					.build();
 
 			byte[] image = rset.getBytes(3);
@@ -69,13 +70,15 @@ public class AllPhotosCall {
 				dateTime = LocalDateTime.ofInstant(Instant.ofEpochMilli(date.getTime()), ZoneId.systemDefault());
 			}
 			
-			IPhoto photo = new PhotoBuilder()
-					.setPersonId(personIdentifier)
-					.setImage(image)
-					.setDate(dateTime)
-					.build();
-				
-			photos.add(photo);
+			if (image != null) {
+				IPhoto photo = new PhotoBuilder()
+						.setPersonId(personIdentifier)
+						.setImage(image)
+						.setDate(dateTime)
+						.build();
+					
+				photos.add(photo);
+			}
 			
 		}
 
