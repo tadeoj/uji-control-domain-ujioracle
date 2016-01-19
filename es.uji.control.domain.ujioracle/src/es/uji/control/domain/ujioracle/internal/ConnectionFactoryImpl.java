@@ -114,11 +114,13 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 			connectionProps.put("user", config.getUser());
 			connectionProps.put("password", config.getPassword());
 			
+			DriverManager.setLoginTimeout(10);
+			
 			try {
 				return DriverManager.getConnection(URL, connectionProps);
 			} catch (SQLException e) {
 				throw new ControlConnectionException("No se ha podido establecer una conexión con la base de datos.");
-			}	
+			}
 
 		}
 
