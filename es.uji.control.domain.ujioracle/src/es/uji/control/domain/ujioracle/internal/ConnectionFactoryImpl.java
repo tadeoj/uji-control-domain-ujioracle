@@ -109,6 +109,7 @@ class ConnectionFactoryImpl implements IControlConnectionFactorySPI {
 		private Connection openConnection() throws ControlConnectionException {
 
 			String URL = String.format("jdbc:oracle:thin:@%s:1521:%s", config.getURL(), config.getSid());
+//			String URL = "db.n.uji.es:1521:alma";
 			
 			Properties connectionProps = new Properties();
 			connectionProps.put("user", config.getUser());
